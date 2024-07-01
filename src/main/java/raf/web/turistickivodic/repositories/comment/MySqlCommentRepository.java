@@ -15,4 +15,9 @@ public class MySqlCommentRepository extends MySqlAbstractRepository implements C
     public Comment addComment(Integer articleId, Comment comment) {
         return null;
     }
+
+    @Override
+    public void deleteComment(Integer commentId) {
+
+    }
 }
