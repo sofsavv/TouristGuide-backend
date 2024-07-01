@@ -17,14 +17,30 @@ public class CommentResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response all(@PathParam("articleId") Integer articleId) {
+    public Response findAll(@PathParam("articleId") Integer articleId) {
         return Response.ok(this.commentService.allComments(articleId)).build();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Comment create(@PathParam("articleId") Integer articleId, @Valid Comment comment) {
-        return this.commentService.addComment(articleId, comment);
+    public Response create(@PathParam("articleId") Integer articleId,@Valid Comment comment) {
+        try {
+            this.commentService.addComment(articleId, comment);
+            return Response.status(Response.Status.CREATED).entity(comment).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Integer id) {
+        try {
+            this.commentService.deleteComment(id);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
 

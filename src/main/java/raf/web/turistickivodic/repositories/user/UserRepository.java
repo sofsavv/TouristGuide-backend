@@ -11,6 +11,6 @@ public interface UserRepository {
     public List<User> allUsers();
     public User editUser(String email, User user);
     public void deleteUser(String user);
-    public void changeStatus(User user);
+    public void changeStatus(String user);
 
 }

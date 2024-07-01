@@ -11,8 +11,8 @@ public class ArticleService {
     @Inject
     private ArticleRepository articleRepository;
 
-    public Article addArticle(Article destination) {
-        return this.articleRepository.addArticle(destination);
+    public Article addArticle(Article article) {
+        return this.articleRepository.addArticle(article);
     }
 
     public List<Article> allArticles() {

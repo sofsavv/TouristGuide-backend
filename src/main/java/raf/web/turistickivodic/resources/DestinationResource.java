@@ -17,34 +17,49 @@ public class DestinationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response all() {
+    public Response findAll() {
         return Response.ok(this.destinationService.allDestinations()).build();
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Destination create(@Valid Destination destination) {
-        return this.destinationService.addDestination(destination);
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Destination find(@PathParam("id") Integer id) {
-        return this.destinationService.findDestination(id);
+    public Response find(@PathParam("id") Integer id) {
+        return Response.ok(this.destinationService.findDestination(id)).build();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@Valid Destination destination) {
+        try {
+            this.destinationService.addDestination(destination);
+            return Response.status(Response.Status.CREATED).entity(destination).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
+        }
     }
 
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Destination update(@PathParam("id") Integer id, @Valid Destination destination) {
-        return this.destinationService.updateDestination(id, destination);
+    public Response update(@PathParam("id") Integer id, @Valid Destination destination) {
+        try {
+            this.destinationService.updateDestination(id, destination);
+            return Response.ok(destination).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
     @DELETE
     @Path("/{id}")
-    public void delete(@PathParam("id") Integer id) {
-        this.destinationService.deleteDestination(id);
+    public Response delete(@PathParam("id") Integer id) {
+        try {
+            this.destinationService.deleteDestination(id);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
 }

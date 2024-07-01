@@ -39,32 +39,59 @@ public class UserResource{
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response all() {
+    public Response findAll() {
         return Response.ok(this.userService.allUsers()).build();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public User create(@Valid User destination) {
-        return this.userService.addUser(destination);
+    public Response create(@Valid User user) {
+        try {
+            this.userService.addUser(user);
+            return Response.status(Response.Status.CREATED).entity(user).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
+        }
     }
 
     @GET
     @Path("/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User find(@PathParam("email") String email) {
-        return this.userService.findUser(email);
+    public Response find(@PathParam("email") String email) {
+        return Response.ok(this.userService.findUser(email)).build();
     }
     @PUT
     @Path("/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User update(@PathParam("email") String email, @Valid User updatedUser) {
-        return this.userService.updateUser(email, updatedUser);
+    public Response update(@PathParam("email") String email, @Valid User updatedUser) {
+        try {
+            this.userService.updateUser(email, updatedUser);
+            return Response.ok(updatedUser).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
     @DELETE
     @Path("/{email}")
-    public void delete(@PathParam("email") String email) {
-        this.userService.deleteUser(email);
+    public Response delete(@PathParam("email") String email) {
+        try {
+            this.userService.deleteUser(email);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
+    @PUT
+    @Path("/{userId}/status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUserStatus(@PathParam("userId") String user) {
+        try {
+            this.userService.changeStatus(user);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error updating user status: " + e.getMessage()).build();
+        }
     }
 
 

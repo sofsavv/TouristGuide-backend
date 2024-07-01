@@ -18,7 +18,9 @@ public class CommentService {
     public List<Comment> allComments(Integer articleId) {
         return this.commentRepository.allComments(articleId);
     }
-
+    public void deleteComment(Integer commentId){
+        this.commentRepository.deleteComment(commentId);
+    }
 
 
 }

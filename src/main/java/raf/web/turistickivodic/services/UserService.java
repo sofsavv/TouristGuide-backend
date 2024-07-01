@@ -81,4 +81,8 @@ public class UserService {
         this.userRepository.deleteUser(user);
     }
 
+    public void changeStatus(String user){
+        this.userRepository.changeStatus(user);
+    }
+
 }

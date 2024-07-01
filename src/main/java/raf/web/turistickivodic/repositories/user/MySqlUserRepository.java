@@ -132,8 +132,6 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
                 throw new SQLException("Updating user failed, no rows affected.");
             }
 
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -168,7 +166,7 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
     }
 
     @Override
-    public void changeStatus(User user) {
+    public void changeStatus(String user) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {

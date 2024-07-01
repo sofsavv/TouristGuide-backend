@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 
 public class LogInRequest {
 
-
     @NotNull(message = "Email is required")
     @NotEmpty(message = "Email is required")
     private String email;

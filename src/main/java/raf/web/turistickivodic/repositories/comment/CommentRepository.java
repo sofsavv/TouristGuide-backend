@@ -8,6 +8,7 @@ public interface CommentRepository {
 
     public List<Comment> allComments(Integer articleId);
     public Comment addComment(Integer articleId, Comment comment);
+    public void deleteComment(Integer commentId);
 
 
 }

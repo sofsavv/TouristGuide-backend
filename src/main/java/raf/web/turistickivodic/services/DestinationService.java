@@ -7,7 +7,7 @@ import raf.web.turistickivodic.repositories.destination.DestinationRepository;
 import javax.inject.Inject;
 import java.util.List;
 
-public class DestinationService {
+public class    DestinationService {
 
     @Inject
     private DestinationRepository destinationRepository;

@@ -17,36 +17,49 @@ public class ArticleResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response all() {
+    public Response findAll() {
         return Response.ok(this.articleService.allArticles()).build();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Article create(@Valid Article destination) {
-        return this.articleService.addArticle(destination);
+    public Response create(@Valid Article article) {
+        try {
+            this.articleService.addArticle(article);
+            return Response.status(Response.Status.CREATED).entity(article).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
+        }
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Article find(@PathParam("id") Integer id) {
-        return this.articleService.findArticle(id);
+    public Response find(@PathParam("id") Integer id) {
+        return Response.ok(this.articleService.findArticle(id)).build();
     }
 
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Article update(@PathParam("id") Integer id, @Valid Article article){
-        return this.articleService.updateArticle(id, article);
+    public Response update(@PathParam("id") Integer id, @Valid Article article){
+        try {
+            this.articleService.updateArticle(id, article);
+            return Response.ok(article).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
     @DELETE
     @Path("/{id}")
-    public void delete(@PathParam("id") Integer id) {
-        this.articleService.deleteArticle(id);
+    public Response delete(@PathParam("id") Integer id) {
+        try {
+            this.articleService.deleteArticle(id);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
-
-
 
 }
