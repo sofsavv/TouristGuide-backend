@@ -1,10 +1,20 @@
 package raf.web.turistickivodic.entities;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class Activity {
 
     private Integer activityId;
-    private String activityInfo;
+    @NotNull(message = "Activity description is required")
+    @NotEmpty(message = "Activity description is required")
+    private String activity;
     private Activity(){}
+
+    public Activity(Integer activityId, String activity) {
+        this.activityId = activityId;
+        this.activity = activity;
+    }
 
     public Integer getActivityId() {
         return activityId;
@@ -14,11 +24,11 @@ public class Activity {
         this.activityId = activityId;
     }
 
-    public String getActivityInfo() {
-        return activityInfo;
+    public String getActivity() {
+        return activity;
     }
 
-    public void setActivityInfo(String activityInfo) {
-        this.activityInfo = activityInfo;
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 }

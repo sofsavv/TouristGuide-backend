@@ -1,10 +1,21 @@
 package raf.web.turistickivodic.entities;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class User {
 
+    @NotNull(message = "Email is required")
+    @NotEmpty(message = "Email is required")
     private String email;
+    @NotNull(message = "First name is required")
+    @NotEmpty(message = "First name is required")
     private String firstName;
+    @NotNull(message = "Last name is required")
+    @NotEmpty(message = "Last name is required")
     private String lastName;
+    @NotNull(message = "Role is required")
+    @NotEmpty(message = "Role is required")
     private String role;
     private boolean active; //status
     private String hashedPassword;

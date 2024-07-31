@@ -3,8 +3,11 @@ package raf.web.turistickivodic;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
+import raf.web.turistickivodic.repositories.destination.DestinationRepository;
+import raf.web.turistickivodic.repositories.destination.MySqlDestRepository;
 import raf.web.turistickivodic.repositories.user.MySqlUserRepository;
 import raf.web.turistickivodic.repositories.user.UserRepository;
+import raf.web.turistickivodic.services.DestinationService;
 import raf.web.turistickivodic.services.UserService;
 
 import javax.inject.Singleton;
@@ -23,8 +26,9 @@ public class HelloApplication extends ResourceConfig {
             @Override
             protected void configure() {
                 this.bind(MySqlUserRepository.class).to(UserRepository.class).in(Singleton.class);
-
+                this.bind(MySqlDestRepository.class).to(DestinationRepository.class).in(Singleton.class);
                 this.bindAsContract(UserService.class);
+                this.bindAsContract(DestinationService.class);
 
             }
         };

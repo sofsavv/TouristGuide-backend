@@ -21,7 +21,7 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
         try {
             connection = this.newConnection();
 
-            preparedStatement = connection.prepareStatement("SELECT * FROM users where email = ?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
             preparedStatement.setString(1, email);
             resultSet = preparedStatement.executeQuery();
 
@@ -34,10 +34,6 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
                 String hashedPassword = resultSet.getString("hashedPassword");
                 user = new User(userEmail, firstName, lastName, role, active, hashedPassword);
             }
-
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,7 +51,6 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = this.newConnection();
@@ -68,14 +63,11 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
             preparedStatement.setBoolean(5, user.isActive());
             preparedStatement.setString(6, user.getHashedPassword());
             preparedStatement.executeUpdate();
-            resultSet = preparedStatement.getGeneratedKeys();
-
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             this.closeStatement(preparedStatement);
-            this.closeResultSet(resultSet);
             this.closeConnection(connection);
         }
 
@@ -126,11 +118,8 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
             preparedStatement.setBoolean(4, user.isActive());
             preparedStatement.setString(5, email);
 
-            int affectedRows = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
 
-            if (affectedRows == 0) {
-                throw new SQLException("Updating user failed, no rows affected.");
-            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -167,6 +156,7 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
 
     @Override
     public void changeStatus(String user) {
+        // TODO:
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {

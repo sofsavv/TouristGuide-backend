@@ -32,7 +32,7 @@ public class UserService {
 
         Algorithm algorithm = Algorithm.HMAC256("secret");
 
-        // JWT-om mozete bezbedono poslati informacije na FE
+        // JWT-om mozete bezbedno poslati informacije na FE
         // Tako sto sve sto zelite da posaljete zapakujete u claims mapu
         return JWT.create()
                 .withIssuedAt(issuedAt)
@@ -54,10 +54,13 @@ public class UserService {
 
         if (!user.isActive()){
             return false;
-        }else if (role.equalsIgnoreCase("editor") && path.startsWith("/users")) {
-            return false;
         }
 
+//        System.out.println(path);
+
+        if(path.equals("users")){
+            return "admin".equals(role);
+        }
         return true;
     }
 

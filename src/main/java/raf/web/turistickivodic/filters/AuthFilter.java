@@ -2,6 +2,7 @@ package raf.web.turistickivodic.filters;
 
 import raf.web.turistickivodic.resources.ArticleResource;
 import raf.web.turistickivodic.resources.DestinationResource;
+import raf.web.turistickivodic.resources.UserResource;
 import raf.web.turistickivodic.services.UserService;
 
 import javax.inject.Inject;
@@ -35,6 +36,7 @@ public class AuthFilter implements ContainerRequestFilter {
             }
 
         } catch (Exception exception) {
+            exception.printStackTrace();
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }
@@ -42,17 +44,19 @@ public class AuthFilter implements ContainerRequestFilter {
     private boolean isAuthRequired(ContainerRequestContext requestContext){
 
         if (requestContext.getUriInfo().getPath().contains("login")) {
+            System.out.println("login");
             return false;
         }
 
         List<Object> matchedResources = requestContext.getUriInfo().getMatchedResources();
+
         for (Object matchedResource : matchedResources) {
-            if (matchedResource instanceof DestinationResource ||
+            System.out.println("matchedResource: "+matchedResource);
+            if (matchedResource instanceof UserResource || matchedResource instanceof DestinationResource ||
                     matchedResource instanceof ArticleResource) {
                 return true;
             }
         }
-
         return false;
 
     }

@@ -1,21 +1,42 @@
 package raf.web.turistickivodic.entities;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Article {
 
     private Integer articleId;
+    @NotNull(message = "Title is required")
+    @NotEmpty(message = "Title is required")
     private String title;
-    private String date;
+    @NotNull(message = "Time of creation is required")
+    @NotEmpty(message = "Time of creation is required")
+    private String dateTime;
+    @NotNull(message = "Number of visits is required")
+    @NotEmpty(message = "Number of visits is required")
     private int visits;
+    @NotNull(message = "Activities are required")
+    @NotEmpty(message = "Activities are required")
     private List<Integer> activityIds;
-
+    @NotNull(message = "Destination is required")
+    @NotEmpty(message = "Destination is required")
     private Integer destinationId;
+    @NotNull(message = "User is required")
+    @NotEmpty(message = "User is required")
     private String user;
 
-    private Article(){
-        activityIds = new ArrayList<>();
+    private Article(){}
+
+    public Article(Integer articleId, String title, String dateTime, int visits, Integer destinationId, String user) {
+        this.articleId = articleId;
+        this.title = title;
+        this.dateTime = dateTime;
+        this.visits = visits;
+        this.destinationId = destinationId;
+        this.user = user;
+        this.activityIds = new ArrayList<>();
     }
 
     public Integer getArticleId() {
@@ -34,12 +55,12 @@ public class Article {
         this.title = title;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public Integer getDestinationId() {
