@@ -25,17 +25,17 @@ public class Article {
     private Integer destinationId;
     @NotNull(message = "User is required")
     @NotEmpty(message = "User is required")
-    private String user;
+    private String author;
 
     private Article(){}
 
-    public Article(Integer articleId, String title, String dateTime, int visits, Integer destinationId, String user) {
+    public Article(Integer articleId, String title, String dateTime, int visits, Integer destinationId, String author) {
         this.articleId = articleId;
         this.title = title;
         this.dateTime = dateTime;
         this.visits = visits;
         this.destinationId = destinationId;
-        this.user = user;
+        this.author = author;
         this.activityIds = new ArrayList<>();
     }
 
@@ -71,12 +71,12 @@ public class Article {
         this.destinationId = destinationId;
     }
 
-    public String getUser() {
-        return user;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public int getVisits() {

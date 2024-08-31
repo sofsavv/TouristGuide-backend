@@ -31,6 +31,7 @@ public class MySqlDestRepository extends MySqlAbstractRepository implements Dest
                 destination.setDestinationId(resultSet.getInt(1));
             }
 
+
         }catch (SQLException e){
             e.printStackTrace();
         }finally {

@@ -24,7 +24,8 @@ public class MySqlCommentRepository extends MySqlAbstractRepository implements C
                 comments.add(new Comment( resultSet.getInt("commentId"),
                         resultSet.getString("author"),
                         resultSet.getString("comment"),
-                        resultSet.getString("dateTime")));
+                        resultSet.getString("dateTime"),
+                        resultSet.getInt("articleId")));
             }
 
         }catch (Exception e){
@@ -47,11 +48,12 @@ public class MySqlCommentRepository extends MySqlAbstractRepository implements C
         try {
             connection = this.newConnection();
             String[] generatedColumns = {"commentId"};
-            preparedStatement = connection.prepareStatement("INSERT INTO comments(author, comment, dateTime) VALUES (?,?,?)", generatedColumns);
+            preparedStatement = connection.prepareStatement("INSERT INTO comments(author, comment, dateTime, articleId) VALUES (?,?,?,?)", generatedColumns);
 
             preparedStatement.setString(1, comment.getAuthor());
             preparedStatement.setString(2, comment.getComment());
             preparedStatement.setString(3, comment.getDate());
+            preparedStatement.setInt(4, articleId);
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
 

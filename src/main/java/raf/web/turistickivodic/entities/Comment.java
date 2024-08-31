@@ -14,14 +14,25 @@ public class Comment {
     @NotEmpty(message = "Comment text is required")
     private String comment;
     private String date;
+    @NotNull(message = "Article ID is required")
+    private Integer articleId;
 
     private Comment(){}
 
-    public Comment(Integer commId, String author, String comment, String date) {
+    public Comment(Integer commId, String author, String comment, String date, Integer articleId) {
         this.commId = commId;
         this.author = author;
         this.comment = comment;
         this.date = date;
+        this.articleId = articleId;
+    }
+
+    public Integer getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
     }
 
     public Integer getCommId() {
