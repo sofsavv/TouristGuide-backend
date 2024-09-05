@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/articles")
 public class ArticleResource {
@@ -17,8 +18,10 @@ public class ArticleResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll() {
-        return Response.ok(this.articleService.allArticles()).build();
+    public Response findAll(
+            @QueryParam("currentPage") @DefaultValue("1") int currentPage,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+        return Response.ok(this.articleService.allArticles(currentPage, pageSize)).build();
     }
 
     @POST
@@ -51,6 +54,18 @@ public class ArticleResource {
         }
     }
 
+    @POST
+    @Path("/{id}/incr")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response incrementViews(@PathParam("id") Integer id) {
+        try {
+            articleService.incrementViews(id);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+    }
+
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Integer id) {
@@ -61,5 +76,27 @@ public class ArticleResource {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    @Path("/filter")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByDestination(@QueryParam("destination") Integer destinationId) {
+        if (destinationId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Destination ID is required").build();
+        }
+        List<Article> articles = this.articleService.findArticlesByDestination(destinationId);
+        return Response.ok(articles).build();
+    }
+
+    @GET
+    @Path("/most-read")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findMostReadArticles() {
+        List<Article> articles = this.articleService.findMostReadArticles();
+        return Response.ok(articles).build();
+    }
+
+
+
 
 }

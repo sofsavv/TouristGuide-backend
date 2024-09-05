@@ -39,8 +39,9 @@ public class UserResource{
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll() {
-        return Response.ok(this.userService.allUsers()).build();
+    public Response findAll(@QueryParam("currentPage") @DefaultValue("1") int currentPage,
+                            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+        return Response.ok(this.userService.allUsers(currentPage, pageSize)).build();
     }
 
     @POST

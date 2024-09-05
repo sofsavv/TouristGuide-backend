@@ -43,8 +43,16 @@ public class AuthFilter implements ContainerRequestFilter {
 
     private boolean isAuthRequired(ContainerRequestContext requestContext){
 
-        if (requestContext.getUriInfo().getPath().contains("login")) {
+        String path = requestContext.getUriInfo().getPath();
+        String method = requestContext.getRequest().getMethod();
+
+        if (path.contains("login")) {
             System.out.println("login");
+            return false;
+        }
+
+        if ("GET".equals(method) && path.startsWith("api/articles")) {
+            System.out.println("ARTICLES");
             return false;
         }
 
@@ -52,8 +60,7 @@ public class AuthFilter implements ContainerRequestFilter {
 
         for (Object matchedResource : matchedResources) {
             System.out.println("matchedResource: "+matchedResource);
-            if (matchedResource instanceof UserResource || matchedResource instanceof DestinationResource ||
-                    matchedResource instanceof ArticleResource) {
+            if (matchedResource instanceof UserResource || matchedResource instanceof DestinationResource) {
                 return true;
             }
         }

@@ -68,8 +68,8 @@ public class UserService {
         return this.userRepository.addUser(user);
     }
 
-    public List<User> allUsers() {
-        return this.userRepository.allUsers();
+    public List<User> allUsers(int currentPage, int pageSize) {
+        return this.userRepository.allUsers(currentPage, pageSize);
     }
 
     public User findUser(String email) {

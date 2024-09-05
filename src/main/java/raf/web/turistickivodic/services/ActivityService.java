@@ -14,8 +14,8 @@ public class ActivityService {
     public Activity addActivity(Activity activity) {
         return this.activityRepository.addActivity(activity);
     }
-    public List<Activity> allActivities() {
-        return this.activityRepository.allActivities();
+    public List<Activity> allActivities(int currentPage, int pageSize) {
+        return this.activityRepository.allActivities(currentPage, pageSize);
     }
 
     public Activity updateActivity(Integer id, Activity activity){
@@ -25,4 +25,7 @@ public class ActivityService {
         this.activityRepository.deleteActivity(id);
     }
 
+    public List<Activity> findActivitiesByArticleId(Integer articleId){
+        return this.activityRepository.getActivitiesByArticleId(articleId);
+    }
 }

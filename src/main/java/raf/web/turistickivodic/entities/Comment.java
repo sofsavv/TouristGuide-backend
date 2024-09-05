@@ -6,24 +6,24 @@ import javax.validation.constraints.NotNull;
 
 public class Comment {
 
-    private Integer commId;
+    private Integer commentId;
     @NotNull(message = "Author is required")
     @NotEmpty(message = "Author is required")
     private String author;
     @NotNull(message = "Comment text is required")
     @NotEmpty(message = "Comment text is required")
     private String comment;
-    private String date;
+    private String dateTime;
     @NotNull(message = "Article ID is required")
     private Integer articleId;
 
     private Comment(){}
 
     public Comment(Integer commId, String author, String comment, String date, Integer articleId) {
-        this.commId = commId;
+        this.commentId = commId;
         this.author = author;
         this.comment = comment;
-        this.date = date;
+        this.dateTime = date;
         this.articleId = articleId;
     }
 
@@ -35,12 +35,12 @@ public class Comment {
         this.articleId = articleId;
     }
 
-    public Integer getCommId() {
-        return commId;
+    public Integer getCommentId() {
+        return commentId;
     }
 
-    public void setCommId(Integer commId) {
-        this.commId = commId;
+    public void setCommentId(Integer commentId) {
+        this.commentId = commentId;
     }
 
     public String getAuthor() {
@@ -59,11 +59,11 @@ public class Comment {
         this.comment = comment;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 }

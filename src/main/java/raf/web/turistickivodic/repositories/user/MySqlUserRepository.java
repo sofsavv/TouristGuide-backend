@@ -75,7 +75,7 @@ public class MySqlUserRepository extends MySqlAbstractRepository implements User
     }
 
     @Override
-    public List<User> allUsers() {
+    public List<User> allUsers(int currentPage, int pageSize) {
 
         List<User> users = new ArrayList<>();
         Connection connection = null;

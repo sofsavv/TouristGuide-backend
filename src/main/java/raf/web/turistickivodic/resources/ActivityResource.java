@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/activities")
 public class ActivityResource {
@@ -16,8 +17,9 @@ public class ActivityResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll() {
-        return Response.ok(this.activityService.allActivities()).build();
+    public Response findAll(@QueryParam("currentPage") @DefaultValue("1") int currentPage,
+                            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+        return Response.ok(this.activityService.allActivities(currentPage, pageSize)).build();
     }
 
     @POST
@@ -55,4 +57,13 @@ public class ActivityResource {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    @Path("/article/{articleId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getActivitiesByArticleId(@PathParam("articleId") int articleId) {
+        List<Activity> activities = this.activityService.findActivitiesByArticleId(articleId);
+        return Response.ok(activities).build();
+    }
+
 }

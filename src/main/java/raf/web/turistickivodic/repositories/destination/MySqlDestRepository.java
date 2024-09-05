@@ -43,17 +43,23 @@ public class MySqlDestRepository extends MySqlAbstractRepository implements Dest
     }
 
     @Override
-    public List<Destination> allDestinations() {
+    public List<Destination> allDestinations(int currentPage, int pageSize) {
 
         List<Destination> destinations = new ArrayList<>();
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try{
             connection = this.newConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM destinations");
+            int offset = (currentPage - 1) * pageSize;
+
+            preparedStatement = connection.prepareStatement("SELECT * FROM destinations LIMIT ? OFFSET ?");
+            preparedStatement.setInt(1, pageSize);
+            preparedStatement.setInt(2, offset);
+
+            resultSet = preparedStatement.executeQuery();
+
             while(resultSet.next()){
                 destinations.add(new Destination( resultSet.getInt("destinationId"),
                         resultSet.getString("destination"),
@@ -63,7 +69,7 @@ public class MySqlDestRepository extends MySqlAbstractRepository implements Dest
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            this.closeStatement(statement);
+            this.closeStatement(preparedStatement);
             this.closeResultSet(resultSet);
             this.closeConnection(connection);
         }

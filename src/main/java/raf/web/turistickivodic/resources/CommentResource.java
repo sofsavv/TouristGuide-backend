@@ -17,11 +17,14 @@ public class CommentResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll(@PathParam("articleId") Integer articleId) {
-        return Response.ok(this.commentService.allComments(articleId)).build();
+    public Response findAll(@PathParam("articleId") Integer articleId,
+                            @QueryParam("currentPage") @DefaultValue("1") int currentPage,
+                            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+        return Response.ok(this.commentService.allComments(articleId, currentPage, pageSize)).build();
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@PathParam("articleId") Integer articleId,@Valid Comment comment) {
         try {

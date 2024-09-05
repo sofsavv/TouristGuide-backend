@@ -16,8 +16,8 @@ public class DestinationService {
         return this.destinationRepository.addDestination(destination);
     }
 
-    public List<Destination> allDestinations() {
-        return this.destinationRepository.allDestinations();
+    public List<Destination> allDestinations(int currentPage, int pageSize) {
+        return this.destinationRepository.allDestinations(currentPage, pageSize);
     }
 
     public Destination findDestination(Integer id) {

@@ -11,12 +11,12 @@ public class CommentService {
     @Inject
     private CommentRepository commentRepository;
 
-    public Comment addComment(Integer articleId, Comment comment) {
-        return this.commentRepository.addComment(articleId, comment);
+    public void addComment(Integer articleId, Comment comment) {
+        this.commentRepository.addComment(articleId, comment);
     }
 
-    public List<Comment> allComments(Integer articleId) {
-        return this.commentRepository.allComments(articleId);
+    public List<Comment> allComments(Integer articleId, int currentPage, int pageSize) {
+        return this.commentRepository.allCommentsInArticle(articleId, currentPage, pageSize);
     }
     public void deleteComment(Integer commentId){
         this.commentRepository.deleteComment(commentId);

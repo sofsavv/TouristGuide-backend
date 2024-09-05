@@ -9,17 +9,25 @@ import java.util.List;
 
 public class MySqlCommentRepository extends MySqlAbstractRepository implements CommentRepository {
     @Override
-    public List<Comment> allComments(Integer articleId) {
+    public List<Comment> allCommentsInArticle(Integer articleId, int currentPage, int pageSize) {
 
         List<Comment> comments = new ArrayList<>();
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try{
             connection = this.newConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM comments");
+            int offset = (currentPage - 1) * pageSize;
+            preparedStatement = connection
+                    .prepareStatement("SELECT * FROM comments WHERE articleId = ? LIMIT ? OFFSET ?");
+
+            preparedStatement.setInt(1, articleId);
+            preparedStatement.setInt(2, pageSize);
+            preparedStatement.setInt(3, offset);
+
+            resultSet = preparedStatement.executeQuery();
+
             while(resultSet.next()){
                 comments.add(new Comment( resultSet.getInt("commentId"),
                         resultSet.getString("author"),
@@ -31,7 +39,7 @@ public class MySqlCommentRepository extends MySqlAbstractRepository implements C
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            this.closeStatement(statement);
+            this.closeStatement(preparedStatement);
             this.closeResultSet(resultSet);
             this.closeConnection(connection);
         }
@@ -44,7 +52,6 @@ public class MySqlCommentRepository extends MySqlAbstractRepository implements C
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-
         try {
             connection = this.newConnection();
             String[] generatedColumns = {"commentId"};
@@ -52,13 +59,13 @@ public class MySqlCommentRepository extends MySqlAbstractRepository implements C
 
             preparedStatement.setString(1, comment.getAuthor());
             preparedStatement.setString(2, comment.getComment());
-            preparedStatement.setString(3, comment.getDate());
+            preparedStatement.setString(3, comment.getDateTime());
             preparedStatement.setInt(4, articleId);
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
 
             if (resultSet.next()) {
-                comment.setCommId(resultSet.getInt(1));
+                comment.setCommentId(resultSet.getInt(1));
             }
 
         }catch (SQLException e){

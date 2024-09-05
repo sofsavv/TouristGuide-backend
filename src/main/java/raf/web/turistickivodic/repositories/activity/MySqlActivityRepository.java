@@ -39,17 +39,24 @@ public class MySqlActivityRepository extends MySqlAbstractRepository implements 
     }
 
     @Override
-    public List<Activity> allActivities() {
+    public List<Activity> allActivities(int currentPage, int pageSize) {
 
         List<Activity> activity = new ArrayList<>();
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try{
             connection = this.newConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM activity");
+
+            int offset = (currentPage - 1) * pageSize;
+
+            preparedStatement = connection.prepareStatement("SELECT * FROM activitys LIMIT ? OFFSET ?");
+            preparedStatement.setInt(1, pageSize);
+            preparedStatement.setInt(2, offset);
+
+            resultSet = preparedStatement.executeQuery();
+
             while(resultSet.next()){
                 activity.add(new Activity( resultSet.getInt("destinationId"),
                         resultSet.getString("activity")));
@@ -58,7 +65,7 @@ public class MySqlActivityRepository extends MySqlAbstractRepository implements 
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            this.closeStatement(statement);
+            this.closeStatement(preparedStatement);
             this.closeResultSet(resultSet);
             this.closeConnection(connection);
         }
@@ -142,5 +149,39 @@ public class MySqlActivityRepository extends MySqlAbstractRepository implements 
         }
 
         return activity;
+    }
+
+    @Override
+    public List<Activity> getActivitiesByArticleId(Integer articleId) {
+
+        List<Activity> activities = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = this.newConnection();
+            preparedStatement = connection.prepareStatement(
+                    "SELECT a.* FROM activitys a " +
+                    "JOIN article_activity aa ON a.activityId = aa.activityId " +
+                    "WHERE aa.articleId = ?");
+            preparedStatement.setInt(1, articleId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int activityId = resultSet.getInt("activityId");
+                String activityName = resultSet.getString("activity");
+                activities.add(new Activity(activityId, activityName));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeResultSet(resultSet);
+            this.closeStatement(preparedStatement);
+            this.closeConnection(connection);
+        }
+
+        return activities;
     }
 }

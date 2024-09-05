@@ -11,6 +11,9 @@ public class Article {
     @NotNull(message = "Title is required")
     @NotEmpty(message = "Title is required")
     private String title;
+    @NotNull(message = "Text is required")
+    @NotEmpty(message = "Text is required")
+    private String text;
     @NotNull(message = "Time of creation is required")
     @NotEmpty(message = "Time of creation is required")
     private String dateTime;
@@ -29,9 +32,10 @@ public class Article {
 
     private Article(){}
 
-    public Article(Integer articleId, String title, String dateTime, int visits, Integer destinationId, String author) {
+    public Article(Integer articleId, String title, String text, String dateTime, int visits, Integer destinationId, String author) {
         this.articleId = articleId;
         this.title = title;
+        this.text = text;
         this.dateTime = dateTime;
         this.visits = visits;
         this.destinationId = destinationId;
@@ -93,5 +97,13 @@ public class Article {
 
     public void setActivityIds(List<Integer> activityIds) {
         this.activityIds = activityIds;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

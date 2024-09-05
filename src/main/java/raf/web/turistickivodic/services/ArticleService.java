@@ -15,8 +15,8 @@ public class ArticleService {
         return this.articleRepository.addArticle(article);
     }
 
-    public List<Article> allArticles() {
-        return this.articleRepository.allArticles();
+    public List<Article> allArticles(int currentPage, int pageSize) {
+        return this.articleRepository.allArticles(currentPage, pageSize);
     }
 
     public Article findArticle(Integer id) {
@@ -29,6 +29,14 @@ public class ArticleService {
         this.articleRepository.deleteArticle(id);
     }
 
-
+    public List<Article> findArticlesByDestination(Integer destinationId){
+         return this.articleRepository.findArticlesByDestination(destinationId);
+    }
+    public List<Article> findMostReadArticles(){
+        return this.articleRepository.findMostReadArticles();
+    }
+    public void incrementViews(Integer articleId){
+        this.articleRepository.inc(articleId);
+    }
 
 }
