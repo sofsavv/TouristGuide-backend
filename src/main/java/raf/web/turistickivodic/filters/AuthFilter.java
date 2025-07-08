@@ -1,6 +1,5 @@
 package raf.web.turistickivodic.filters;
 
-import raf.web.turistickivodic.resources.ArticleResource;
 import raf.web.turistickivodic.resources.DestinationResource;
 import raf.web.turistickivodic.resources.UserResource;
 import raf.web.turistickivodic.services.UserService;
