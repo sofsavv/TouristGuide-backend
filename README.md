@@ -1,4 +1,4 @@
-## Tourist Guide 
+## Tourist Guide - backend
 Note: Some features may still be incomplete.
 
 This is an university project, online platform that lets users explore and read travel articles by destination and activity,
